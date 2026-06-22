@@ -1,0 +1,26 @@
+# ── Sentinel SOC — Python dependencies ───────────────────────────────
+# Install with:  pip install -r requirements.txt
+
+# Core (required)
+Flask>=3.0
+psutil>=5.9
+reportlab>=4.0          # professional PDF report generation
+requests>=2.31          # CISA KEV feed, YARA rule updates, optional VT lookup
+
+# Encryption at rest (recommended; falls back to a pure-Python cipher if absent)
+cryptography>=42.0
+
+# Arabic report shaping (recommended for correct Arabic PDFs)
+arabic-reshaper>=3.0
+python-bidi>=0.4
+
+# Real-time file watching (recommended; falls back to polling if absent)
+watchdog>=4.0
+
+# ── Optional / Windows-only ──────────────────────────────────────────
+# These improve detection on Windows but the app runs without them.
+#   pip install pywin32 wmi      # event-driven process monitoring (WMI)
+#   pip install yara-python      # full YARA engine (built-in fallback otherwise)
+# pywin32>=306 ; sys_platform == "win32"
+# wmi>=1.5 ; sys_platform == "win32"
+# yara-python>=4.3

@@ -1,0 +1,49 @@
+# ── Sentinel SOC — .gitignore ────────────────────────────────────────
+# NEVER commit runtime secrets, keys, user data, or local state.
+
+# Encryption keys & secrets  (CRITICAL — never publish these)
+sentinel.key
+*.key
+.env
+.env.*
+
+# Runtime data / state (per-machine, contains user + scan data)
+sentinel_*.json
+sentinel_fim.json
+sentinel_allowlist.json
+sentinel.log
+sentinel.log.*
+backups/
+sentinel_rules/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+build/
+dist/
+*.spec.bak
+
+# PyInstaller output
+/build/
+/dist/
+*.exe
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Local model files / large vendored libs (document how to fetch instead)
+dashboard/vendor/
+
+
+# Test artifacts
+.pytest_cache/
+htmlcov/
+.coverage
