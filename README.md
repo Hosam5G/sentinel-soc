@@ -61,11 +61,52 @@ plain language — useful for learning, monitoring, and incident awareness.
 
 ## Privacy
 
-- **100% local.** No telemetry, no cloud, no account required.
-- The only optional outbound calls are: the **CISA KEV** public feed, **community
-  YARA rule** updates, and — only if *you* enable it with *your* API key — a
-  **VirusTotal hash lookup** (sends a file hash, never the file).
+- **Detection and AI run 100% locally.** No telemetry, no cloud inference, no
+  account required. Process/network/file monitoring, the behavioral baseline,
+  YARA scanning, and the AI model all run on your machine.
+- **The local AI model never leaves your device.** It runs through Ollama on
+  `127.0.0.1:11434` — prompts and responses stay local.
+- The only **optional** outbound calls are threat-intelligence updates, and they
+  are not required for the tool to work:
+  - **CISA KEV** public feed (known-exploited-vulnerabilities catalog)
+  - **community YARA rule** updates (from public GitHub repos)
+  - **IP geolocation** database (public, for network analysis)
+  - **VirusTotal hash lookup** — only if *you* enable it with *your* API key
+    (sends a file hash, never the file itself)
+  - **Telegram alerts** — only if *you* configure them
+- Disable all of the above and the core detection still works fully offline.
 - All data is stored encrypted at rest on your machine.
+
+---
+
+## AI models
+
+Sentinel talks to a **local** large language model through
+[Ollama](https://ollama.com) for its analysis and report-writing features.
+
+**Default:** [Foundation-Sec-8B](https://huggingface.co/fdtn-ai) — an
+open-weights model specialized for cybersecurity, in two presets:
+- `Q4` — lighter (~4.9 GB), runs on modest hardware
+- `Q8` — full (~8.5 GB), higher accuracy
+
+**It works with any Ollama model, not just Foundation-Sec.** Sentinel queries
+Ollama for the models you actually have installed and lists them in the model
+picker — so you can switch to Llama 3, Qwen, Mistral, or anything else you've
+pulled, with one click. (Foundation-Sec is recommended because it's tuned for
+security, but it's not required.)
+
+To point the presets at different tags, set environment variables:
+```bash
+set SENTINEL_MODEL_Q4=your-model:tag
+set SENTINEL_MODEL_Q8=your-other-model:tag
+```
+
+The tool also runs **without any model** — detection, scanning, and reports
+still work; only the AI-written analysis is reduced to built-in summaries.
+
+> Note: the integration targets the **Ollama API** (`/api/generate`,
+> `/api/chat`). Models served through other runtimes (LM Studio, llama.cpp
+> directly, GPT4All) would need a small adapter.
 
 ---
 
@@ -73,8 +114,8 @@ plain language — useful for learning, monitoring, and incident awareness.
 
 - Windows 10 / 11
 - Python 3.10+
-- [Ollama](https://ollama.com) with a Foundation-Sec model pulled (for AI
-  analysis; the tool works without it, with reduced analysis features)
+- [Ollama](https://ollama.com) with any model pulled (for AI analysis; the tool
+  works without it, with reduced analysis features)
 - Recommended: run **as Administrator** so isolation can act on high-privilege
   processes
 - Optional: [Sysmon](https://learn.microsoft.com/sysinternals/downloads/sysmon)
