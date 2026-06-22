@@ -40,7 +40,7 @@ Thumbs.db
 *.swp
 
 # Local model files / large vendored libs (document how to fetch instead)
-dashboard/vendor/
+
 
 
 # Test artifacts
