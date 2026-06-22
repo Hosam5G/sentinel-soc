@@ -1,0 +1,325 @@
+/* ============================================================
+   Equilibrium · Foundations
+   Color + Type tokens, base + semantic.
+   ------------------------------------------------------------
+   The Equilibrium brand lives on top of cinematic, looping
+   background video. Color is intentionally restrained: white,
+   black, and translucent neutrals do almost all of the work.
+   Type is the self-hosted Thmanyah family (bilingual Arabic +
+   Latin): Sans for UI, Serif Text for reading, Serif Display
+   for headlines.
+   ============================================================ */
+
+/* ============================================================
+   THMANYAH TYPE — self-hosted, bilingual (Arabic + Latin)
+   Three families form the system:
+     · Thmanyah Sans         → UI, nav, body, buttons
+     · Thmanyah Serif Text   → editorial reading / long-form body
+     · Thmanyah Serif Display→ large expressive headlines & quotes
+   All weights: 300 / 400 / 500 / 700 / 900.
+   ============================================================ */
+
+/* ---- Thmanyah Sans (primary) ---- */
+@font-face { font-family:'Thmanyah Sans'; src:url('fonts/thmanyahsans-Light.woff2')   format('woff2'); font-weight:300; font-style:normal; font-display:swap; }
+@font-face { font-family:'Thmanyah Sans'; src:url('fonts/thmanyahsans-Regular.woff2') format('woff2'); font-weight:400; font-style:normal; font-display:swap; }
+@font-face { font-family:'Thmanyah Sans'; src:url('fonts/thmanyahsans-Medium.woff2')  format('woff2'); font-weight:500; font-style:normal; font-display:swap; }
+@font-face { font-family:'Thmanyah Sans'; src:url('fonts/thmanyahsans-Bold.woff2')    format('woff2'); font-weight:700; font-style:normal; font-display:swap; }
+@font-face { font-family:'Thmanyah Sans'; src:url('fonts/thmanyahsans-Black.woff2')   format('woff2'); font-weight:900; font-style:normal; font-display:swap; }
+
+/* ---- Thmanyah Serif Text (editorial body) ---- */
+@font-face { font-family:'Thmanyah Serif Text'; src:url('fonts/thmanyahseriftext-Light.woff2')   format('woff2'); font-weight:300; font-style:normal; font-display:swap; }
+@font-face { font-family:'Thmanyah Serif Text'; src:url('fonts/thmanyahseriftext-Regular.woff2') format('woff2'); font-weight:400; font-style:normal; font-display:swap; }
+@font-face { font-family:'Thmanyah Serif Text'; src:url('fonts/thmanyahseriftext-Medium.woff2')  format('woff2'); font-weight:500; font-style:normal; font-display:swap; }
+@font-face { font-family:'Thmanyah Serif Text'; src:url('fonts/thmanyahseriftext-Bold.woff2')    format('woff2'); font-weight:700; font-style:normal; font-display:swap; }
+@font-face { font-family:'Thmanyah Serif Text'; src:url('fonts/thmanyahseriftext-Black.woff2')   format('woff2'); font-weight:900; font-style:normal; font-display:swap; }
+
+/* ---- Thmanyah Serif Display (headlines) ---- */
+@font-face { font-family:'Thmanyah Serif Display'; src:url('fonts/thmanyahserifdisplay-Light.woff2')   format('woff2'); font-weight:300; font-style:normal; font-display:swap; }
+@font-face { font-family:'Thmanyah Serif Display'; src:url('fonts/thmanyahserifdisplay-Regular.woff2') format('woff2'); font-weight:400; font-style:normal; font-display:swap; }
+@font-face { font-family:'Thmanyah Serif Display'; src:url('fonts/thmanyahserifdisplay-Medium.woff2')  format('woff2'); font-weight:500; font-style:normal; font-display:swap; }
+@font-face { font-family:'Thmanyah Serif Display'; src:url('fonts/thmanyahserifdisplay-Bold.woff2')    format('woff2'); font-weight:700; font-style:normal; font-display:swap; }
+@font-face { font-family:'Thmanyah Serif Display'; src:url('fonts/thmanyahserifdisplay-Black.woff2')   format('woff2'); font-weight:900; font-style:normal; font-display:swap; }
+
+:root {
+  /* --------------------------------------------------
+     COLOR · Core neutrals
+     -------------------------------------------------- */
+  --eq-black:        #000000;
+  --eq-ink:          #0A0A0B;   /* near-black for text on light */
+  --eq-white:        #FFFFFF;
+  --eq-bone:         #F6F5F2;   /* warm off-white for light backgrounds */
+  --eq-stone:        #B7B5B0;   /* mid neutral */
+  --eq-graphite:     #2A2A2C;   /* dark surface */
+
+  /* --------------------------------------------------
+     COLOR · Translucent whites (on dark / over media)
+     The liquid-glass system is built from these.
+     -------------------------------------------------- */
+  --eq-white-01:     rgba(255,255,255,0.01); /* glass base fill */
+  --eq-white-05:     rgba(255,255,255,0.05); /* hover wash */
+  --eq-white-10:     rgba(255,255,255,0.10); /* divider, faint surface */
+  --eq-white-15:     rgba(255,255,255,0.15); /* selected/active chip */
+  --eq-white-25:     rgba(255,255,255,0.25);
+  --eq-white-45:     rgba(255,255,255,0.45); /* gradient border edge */
+  --eq-white-60:     rgba(255,255,255,0.60); /* secondary text on dark */
+  --eq-white-70:     rgba(255,255,255,0.70); /* nav text default */
+  --eq-white-90:     rgba(255,255,255,0.90);
+
+  /* --------------------------------------------------
+     COLOR · Semantic (intent)
+     Used sparingly — wellness brand stays neutral.
+     -------------------------------------------------- */
+  --eq-accent-warm:  #E8C9A3;   /* sand / sun accent */
+  --eq-accent-leaf:  #6B8F71;   /* moss / wellness accent */
+  --eq-accent-sky:   #A8C0CC;   /* breath / calm accent */
+  --eq-success:      #6B8F71;
+  --eq-warning:      #D4A574;
+  --eq-danger:       #C97064;
+
+  /* --------------------------------------------------
+     COLOR · Roles
+     -------------------------------------------------- */
+  --fg-1:            var(--eq-white);        /* primary text on dark/media */
+  --fg-2:            var(--eq-white-60);     /* secondary text on dark */
+  --fg-3:            var(--eq-white-45);     /* tertiary text on dark */
+  --fg-on-light:     var(--eq-ink);
+  --fg-on-light-2:   #5A5A5C;
+
+  --bg-page:         var(--eq-black);
+  --bg-page-light:   var(--eq-bone);
+  --bg-surface:      var(--eq-white-05);     /* glass surface */
+  --bg-surface-hi:   var(--eq-white-10);
+  --bg-selected:     var(--eq-white-15);
+
+  --border-soft:     var(--eq-white-10);
+  --border-hairline: var(--eq-white-15);
+
+  /* --------------------------------------------------
+     TYPE · Family
+     -------------------------------------------------- */
+  --font-sans: 'Thmanyah Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-serif-text: 'Thmanyah Serif Text', Georgia, 'Times New Roman', serif;
+  --font-serif-display: 'Thmanyah Serif Display', Georgia, 'Times New Roman', serif;
+  --font-mono: ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* --------------------------------------------------
+     TYPE · Weights
+     Equilibrium leans on 400 + 500. 600/700 only for
+     hard emphasis. 300 reserved for very large display.
+     -------------------------------------------------- */
+  --weight-light:    300;
+  --weight-regular:  400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+  --weight-bold:     700;
+
+  /* --------------------------------------------------
+     TYPE · Scale (px)
+     -------------------------------------------------- */
+  --text-xs:    12px;
+  --text-sm:    14px;
+  --text-base:  16px;
+  --text-md:    18px;
+  --text-lg:    20px;
+  --text-xl:    24px;
+  --text-2xl:   30px;
+  --text-3xl:   36px;
+  --text-4xl:   48px;
+  --text-5xl:   60px;
+  --text-6xl:   72px;
+
+  /* --------------------------------------------------
+     TYPE · Leading + tracking
+     Calm, slightly tight on display, generous on body.
+     -------------------------------------------------- */
+  --leading-tight:    1.05;
+  --leading-snug:     1.2;
+  --leading-normal:   1.5;
+  --leading-relaxed:  1.65;
+
+  --tracking-tight:   -0.02em;
+  --tracking-normal:  0em;
+  --tracking-wide:    0.04em;
+  --tracking-eyebrow: 0.12em;  /* uppercase eyebrows */
+
+  /* --------------------------------------------------
+     SPACING · 4px base
+     -------------------------------------------------- */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+
+  /* --------------------------------------------------
+     RADII
+     Pill for CTAs, soft-rounded for glass panels,
+     small for chips/nav items.
+     -------------------------------------------------- */
+  --radius-xs:    6px;
+  --radius-sm:    8px;
+  --radius-md:    12px;
+  --radius-lg:    16px;
+  --radius-xl:    20px;
+  --radius-2xl:   24px;
+  --radius-pill:  9999px;
+
+  /* --------------------------------------------------
+     SHADOWS / GLASS
+     Equilibrium does NOT use drop shadows on hero
+     surfaces — depth comes from the inner highlight
+     and the gradient border. Drop shadows are reserved
+     for popovers floating over light backgrounds.
+     -------------------------------------------------- */
+  --shadow-inset-hi: inset 0 1px 1px rgba(255,255,255,0.10);
+  --shadow-pop:      0 16px 48px rgba(0,0,0,0.18);
+  --shadow-card:     0 2px 8px rgba(0,0,0,0.04), 0 12px 32px rgba(0,0,0,0.06);
+
+  /* --------------------------------------------------
+     BLUR
+     -------------------------------------------------- */
+  --blur-glass-sm: 4px;
+  --blur-glass-md: 12px;
+  --blur-glass-lg: 24px;
+
+  /* --------------------------------------------------
+     MOTION
+     Equilibrium uses only color transitions; no bounce,
+     no scale on hover. Buttons feel "still water".
+     -------------------------------------------------- */
+  --ease-out:   cubic-bezier(0.2, 0.6, 0.2, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast:   150ms;
+  --dur-base:   220ms;
+  --dur-slow:   400ms;
+}
+
+/* ============================================================
+   GLOBAL TYPE — Thmanyah Sans everywhere
+   ============================================================ */
+* {
+  font-family: var(--font-sans);
+}
+
+body {
+  font-family: var(--font-sans);
+  font-weight: var(--weight-regular);
+  font-size:   var(--text-base);
+  line-height: var(--leading-normal);
+  color:       var(--fg-on-light);
+  background:  var(--bg-page);
+}
+
+/* ============================================================
+   SEMANTIC TYPE ROLES
+   Use these classes instead of styling raw elements when
+   embedding Equilibrium type in a product UI.
+   ============================================================ */
+.t-display {
+  font-size:      var(--text-6xl);
+  font-weight:    var(--weight-medium);
+  line-height:    var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+}
+.t-h1 {
+  font-size:      var(--text-5xl);
+  font-weight:    var(--weight-medium);
+  line-height:    var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+}
+.t-h2 {
+  font-size:      var(--text-4xl);
+  font-weight:    var(--weight-medium);
+  line-height:    var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+}
+.t-h3 {
+  font-size:      var(--text-2xl);
+  font-weight:    var(--weight-medium);
+  line-height:    var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+}
+.t-h4 {
+  font-size:      var(--text-xl);
+  font-weight:    var(--weight-medium);
+  line-height:    var(--leading-snug);
+}
+.t-body {
+  font-size:      var(--text-base);
+  font-weight:    var(--weight-regular);
+  line-height:    var(--leading-relaxed);
+}
+.t-body-sm {
+  font-size:      var(--text-sm);
+  font-weight:    var(--weight-regular);
+  line-height:    var(--leading-relaxed);
+}
+.t-eyebrow {
+  font-size:      var(--text-xs);
+  font-weight:    var(--weight-medium);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+}
+.t-caption {
+  font-size:      var(--text-xs);
+  font-weight:    var(--weight-regular);
+  color:          var(--fg-2);
+}
+.t-mono {
+  font-family: var(--font-mono);
+  font-size:   var(--text-sm);
+}
+.t-serif-display {
+  font-family:    var(--font-serif-display);
+  font-weight:    var(--weight-regular);
+  line-height:    var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+}
+.t-serif-text {
+  font-family:    var(--font-serif-text);
+  font-weight:    var(--weight-regular);
+  line-height:    var(--leading-relaxed);
+}
+
+/* ============================================================
+   LIQUID GLASS — the brand's signature surface
+   Always rendered over media or color, never on white.
+   ============================================================ */
+.liquid-glass {
+  background: rgba(255,255,255,0.01);
+  background-blend-mode: luminosity;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  border: none;
+  box-shadow: inset 0 1px 1px rgba(255,255,255,0.10);
+  position: relative;
+  overflow: hidden;
+}
+.liquid-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.4px;
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.45) 0%,
+    rgba(255,255,255,0.15) 20%,
+    rgba(255,255,255,0.00) 40%,
+    rgba(255,255,255,0.00) 60%,
+    rgba(255,255,255,0.15) 80%,
+    rgba(255,255,255,0.45) 100%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+}

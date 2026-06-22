@@ -1,0 +1,233 @@
+/* Equilibrium Sentinel — layout fixes only (typography left as designed)
+   ------------------------------------------------------------------
+   The font/colors are restored to the original design. This file now
+   only carries the scroll fix and the tiny offline badge style.
+   Load AFTER styles.css.
+   ------------------------------------------------------------------ */
+
+/* SCROLL FIX — main column is flex; without min-height:0 its scroll area
+   can't shrink, so long pages got clipped instead of scrolling. */
+.main   { min-height: 0; }
+.scroll { min-height: 0; }
+
+@media (max-height: 620px) {
+  .app    { height: auto; min-height: 100vh; overflow: visible; }
+  .scroll { overflow-y: visible; }
+}
+
+/* tiny "offline" badge used on the Overview AI panel when the backend is down */
+.src-badge {
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.04em;
+  padding: 2px 7px; border-radius: 999px;
+  color: var(--text-2); box-shadow: inset 0 0 0 1px var(--hairline);
+}
+.src-badge.offline { color: var(--warning); }
+
+/* ------------------------------------------------------------------
+   Requested tweaks
+   ------------------------------------------------------------------ */
+
+/* 1) The "Low" severity / inbound colour was a hard-to-read periwinkle
+      purple. Switch to a clear, legible blue in both themes. */
+html[data-theme="dark"]  { --sev-low: #4DA3FF; }
+html[data-theme="light"] { --sev-low: #2563EB; }
+
+/* 2) Light mode: remove the green/“skin” tint that the background video
+      cast through the glass. Keeps light mode clean and neutral. */
+html[data-theme="light"] .bg-video { opacity: 0 !important; }
+
+/* typewriter cursor + modal fade (used by the AI summary + report modals) */
+@keyframes sxBlink { 0%,50% { opacity: 1; } 50.01%,100% { opacity: 0; } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* ------------------------------------------------------------------
+   LIGHT MODE: bring the background video back and make it glassy like
+   dark mode — drop the heavy grey film that sat over it.
+   ------------------------------------------------------------------ */
+html[data-theme="light"] .bg-video { opacity: 1 !important; filter: brightness(0.92) saturate(1.06); }
+html[data-theme="light"] body::before {
+  background:
+    radial-gradient(58% 50% at 15% -5%, color-mix(in srgb, var(--primary) 9%, transparent) 0%, transparent 60%),
+    radial-gradient(52% 48% at 101% 6%, color-mix(in srgb, var(--secondary) 8%, transparent) 0%, transparent 58%),
+    linear-gradient(160deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.10) 100%) !important;
+}
+html[data-theme="light"] body::after { background: radial-gradient(120% 90% at 50% 0%, transparent 62%, rgba(18,24,32,0.05) 100%) !important; }
+
+/* ------------------------------------------------------------------
+   Legibility over the green video background (dark + light)
+   ------------------------------------------------------------------ */
+/* AI summary was a muted colour that blended into the green backdrop */
+.ai-summary { color: var(--text-1) !important; }
+html[data-theme="dark"]  .ai-summary { text-shadow: 0 1px 6px rgba(0,0,0,0.55); }
+html[data-theme="light"] .ai-summary { text-shadow: 0 1px 4px rgba(255,255,255,0.75); }
+
+/* give the big panels a touch more backing so text doesn't sit on raw video,
+   while staying glassy */
+html[data-theme="dark"]  .ai-panel, html[data-theme="dark"]  .corehero { background-color: rgba(9,14,20,0.46); }
+html[data-theme="light"] .ai-panel, html[data-theme="light"] .corehero { background-color: rgba(255,255,255,0.58); }
+
+/* muted helper text was too faint in both themes — lift it one step */
+html[data-theme="dark"]  { --text-3: #9fb1bd; }
+html[data-theme="light"] { --text-3: #5a6b78; }
+
+/* ------------------------------------------------------------------
+   Realism buttons — clean dark core with a soft green glow.
+   Kept simple so the label/icon are always crisp and centered.
+   ------------------------------------------------------------------ */
+.btn.btn-primary, button.btn-primary {
+  position: relative !important;
+  border: none !important;
+  border-radius: 12px !important;
+  background:
+    radial-gradient(40px 30px at 12% 115%, rgba(63,255,117,0.45), transparent 70%),
+    linear-gradient(160deg, #20262b, #0d0f11) !important;
+  color: #fff !important;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.10) inset,
+    -3px 6px 22px rgba(0,255,80,0.18),
+    0 6px 18px rgba(0,0,0,0.35) !important;
+  transition: transform .2s ease, box-shadow .25s ease, filter .2s ease !important;
+}
+.btn.btn-primary:hover, button.btn-primary:hover {
+  transform: translateY(-1px) scale(1.02) !important;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.14) inset,
+    -4px 8px 30px rgba(0,255,80,0.32),
+    0 8px 22px rgba(0,0,0,0.4) !important;
+  filter: brightness(1.06);
+}
+.btn.btn-primary:active, button.btn-primary:active { transform: translateY(0) scale(0.99) !important; }
+
+/* tiny pill text was getting clipped — let it breathe */
+.sev, .pill, .chip { white-space: normal !important; line-height: 1.4 !important; height: auto !important; }
+
+/* ==================================================================
+   READABILITY OVER BRIGHT BACKGROUNDS
+   The video/CSS backgrounds can be very light, washing out text on
+   translucent cards. Give every card a darker, less transparent base
+   and force readable text colors so nothing disappears.
+   ================================================================== */
+.card, .panel, .stat, .tile, .widget,
+.glass, .glass-1, .glass-2, .glass-3,
+.ai-panel, .corehero, .sec-card, .stat-card, .statcard,
+[class*="card"]:not(.card-pad):not(.card-head) {
+  background: rgba(12, 18, 22, 0.82) !important;
+  backdrop-filter: blur(16px) saturate(1.1) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(1.1) !important;
+  border: 1px solid rgba(255,255,255,0.10) !important;
+}
+/* StatCard tiles (the counters at the top of each page) */
+.stat-card, .statcard, .kpi, .metric-card, .ov-stat {
+  background: rgba(12, 18, 22, 0.82) !important;
+}
+/* muted/secondary text was the worst offender — lift its contrast */
+.muted, .text-3, .subtle, .hint, .meta {
+  color: rgba(255,255,255,0.70) !important;
+}
+/* table headers + cells stay legible */
+table th { color: rgba(255,255,255,0.85) !important; }
+table td { color: rgba(255,255,255,0.92) !important; }
+/* chart axis / grid labels (SVG text) */
+svg text { fill: rgba(255,255,255,0.78) !important; }
+/* the top app bar / header strip */
+.topbar, .appbar, header.bar {
+  background: rgba(10, 15, 19, 0.72) !important;
+  backdrop-filter: blur(18px) !important;
+}
+
+/* ==================================================================
+   AI LOADER HERO — animated orb + title + ask bar (replaces laptop)
+   Uses the original spinning inset box-shadow for the orb, with the
+   word "Analyzing" centred inside it. Thmanyah font is inherited.
+   ================================================================== */
+.ai-hero {
+  border-radius: 20px;
+  padding: 28px 30px;
+  margin-bottom: 20px;
+  background: rgba(10, 14, 18, 0.82) !important;
+  backdrop-filter: blur(18px) saturate(1.1) !important;
+  border: 0.5px solid rgba(255,255,255,0.12) !important;
+}
+.ai-hero-row {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+@media (max-width: 760px) {
+  .ai-hero-row { flex-direction: column; text-align: center; gap: 18px; }
+}
+
+/* ---- the orb ---- */
+.ai-orb-wrap {
+  width: 150px; height: 150px; position: relative; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.ai-orb {
+  position: absolute; inset: 0; border-radius: 50%;
+  box-shadow:
+    0 10px 20px 0 #fff inset,
+    0 20px 30px 0 #ad5fff inset,
+    0 60px 60px 0 #471eec inset;
+  animation: sx-orb-rotate 2s linear infinite;
+}
+.ai-orb-text {
+  position: absolute; z-index: 2;
+  display: flex; gap: 0.5px;
+  direction: ltr; unicode-bidi: isolate;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 13px; color: #fff; letter-spacing: 0.3px;
+}
+.ai-orb-text span {
+  display: inline-block; opacity: 0.4; font-weight: 400;
+  animation: sx-orb-letter 2s infinite;
+}
+.ai-orb-text span:nth-child(1) { animation-delay: 0s; }
+.ai-orb-text span:nth-child(2) { animation-delay: 0.1s; }
+.ai-orb-text span:nth-child(3) { animation-delay: 0.2s; }
+.ai-orb-text span:nth-child(4) { animation-delay: 0.3s; }
+.ai-orb-text span:nth-child(5) { animation-delay: 0.4s; }
+.ai-orb-text span:nth-child(6) { animation-delay: 0.5s; }
+.ai-orb-text span:nth-child(7) { animation-delay: 0.6s; }
+.ai-orb-text span:nth-child(8) { animation-delay: 0.7s; }
+.ai-orb-text span:nth-child(9) { animation-delay: 0.8s; }
+@keyframes sx-orb-rotate {
+  0%   { transform: rotate(90deg);  box-shadow: 0 10px 20px 0 #fff inset, 0 20px 30px 0 #ad5fff inset, 0 60px 60px 0 #471eec inset; }
+  50%  { transform: rotate(270deg); box-shadow: 0 10px 20px 0 #fff inset, 0 20px 10px 0 #d60a47 inset, 0 40px 60px 0 #311e80 inset; }
+  100% { transform: rotate(450deg); box-shadow: 0 10px 20px 0 #fff inset, 0 20px 30px 0 #ad5fff inset, 0 60px 60px 0 #471eec inset; }
+}
+@keyframes sx-orb-letter {
+  0%, 100% { opacity: 0.4; transform: translateY(0); }
+  20%      { opacity: 1;   transform: scale(1.15); }
+  40%      { opacity: 0.7; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ai-orb { animation: none; }
+  .ai-orb-text span { animation: none; opacity: 0.85; }
+}
+
+/* ---- right-side body ---- */
+.ai-hero-body { flex: 1; min-width: 0; }
+.ai-hero-eyebrow {
+  font-size: 12px; font-weight: 600; letter-spacing: 0.06em;
+  color: #9b8cff; margin-bottom: 7px;
+}
+.ai-hero-title {
+  font-size: 21px; font-weight: 600; color: #f2f2f5;
+  margin: 0 0 9px; line-height: 1.3;
+}
+.ai-hero-summary {
+  font-size: 14px; line-height: 1.85; color: rgba(255,255,255,0.7);
+  margin: 0; max-height: 132px; overflow-y: auto;
+}
+.ai-hero-meta {
+  display: flex; align-items: center; gap: 10px;
+  margin-top: 14px; flex-wrap: wrap;
+}
+.ai-model-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #9b8cff; box-shadow: 0 0 8px #9b8cff; flex-shrink: 0;
+}
+.ai-model-name { font-size: 12.5px; color: rgba(255,255,255,0.62); font-weight: 500; }
+
+/* ---- ask bar spanning full width ---- */
+.ai-hero-ask { margin-top: 20px; }

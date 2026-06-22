@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sentinel — Monitoring Dashboard</title>
+<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="contrast-fix.css" />
+<style>
+  /* ---- Background switching system (privacy-first, all local) ---- */
+  .bg-host{position:fixed;inset:0;z-index:-10;overflow:hidden;background:#070b0a;}
+  .bg-host .bg-video,.bg-host .bg-css{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .6s ease;pointer-events:none;}
+  .bg-host .bg-video{object-fit:cover;}
+  /* show only the active background based on <html data-bg="..."> */
+  html[data-bg="video-current"] #bg-vid-current{opacity:1;}
+  html[data-bg="video-1"] #bg-vid-1{opacity:1;}
+  html[data-bg="video-2"] #bg-vid-2{opacity:1;}
+  html[data-bg="blue-waves"] .bg-blue-waves{opacity:1;}
+  html[data-bg="purple-nebula"] .bg-purple-nebula{opacity:1;}
+  html[data-bg="aurora-green"] .bg-aurora-green{opacity:1;}
+  /* default if no attribute yet */
+  html:not([data-bg]) #bg-vid-current{opacity:1;}
+
+  /* CSS-only animated backgrounds (no video files needed) */
+  .bg-css::before,.bg-css::after{content:"";position:absolute;border-radius:50%;filter:blur(70px);opacity:.5;animation:sx-float 20s ease-in-out infinite;}
+  .bg-blue-waves{background:linear-gradient(160deg,#070b0a,#0a1830);}
+  .bg-blue-waves::before{width:480px;height:480px;left:55%;top:-140px;background:radial-gradient(circle,#3a7bff55,transparent);}
+  .bg-blue-waves::after{width:420px;height:420px;left:-110px;bottom:-130px;background:radial-gradient(circle,#1b4ea855,transparent);animation-delay:-9s;}
+  .bg-purple-nebula{background:linear-gradient(160deg,#070b0a,#160a28);}
+  .bg-purple-nebula::before{width:460px;height:460px;left:25%;bottom:-150px;background:radial-gradient(circle,#9b4bff55,transparent);}
+  .bg-purple-nebula::after{width:420px;height:420px;right:-90px;top:-110px;background:radial-gradient(circle,#5a1bb055,transparent);animation-delay:-7s;}
+  .bg-aurora-green{background:#070b0a;}
+  .bg-aurora-green::before{width:440px;height:440px;left:-90px;bottom:-110px;background:radial-gradient(circle,#3fff75,#00ff8033,transparent);}
+  .bg-aurora-green::after{width:400px;height:400px;right:-70px;top:-90px;background:radial-gradient(circle,#10b77f55,transparent);animation-delay:-6s;}
+  @keyframes sx-float{0%,100%{transform:translate(0,0)}50%{transform:translate(34px,-30px)}}
+</style>
+</head>
+<body class="booted">
+<!-- Local background system (privacy-first: no external requests).
+     Video backgrounds load from dashboard/media/. The CSS backgrounds need no
+     files at all. The active one is chosen by the data-bg attribute on <html>. -->
+<div class="bg-host" aria-hidden="true">
+  <video id="bg-vid-current" class="bg-video" autoplay loop muted playsinline>
+    <source src="media/bg-video-current.mp4" type="video/mp4" />
+  </video>
+  <video id="bg-vid-1" class="bg-video" autoplay loop muted playsinline>
+    <source src="media/bg-video-1.mp4" type="video/mp4" />
+  </video>
+  <video id="bg-vid-2" class="bg-video" autoplay loop muted playsinline>
+    <source src="media/bg-video-2.mp4" type="video/mp4" />
+  </video>
+  <div class="bg-css bg-blue-waves"></div>
+  <div class="bg-css bg-purple-nebula"></div>
+  <div class="bg-css bg-aurora-green"></div>
+</div>
+<div id="root"></div>
+
+<script src="vendor/react.js"></script>
+<script src="vendor/react-dom.js"></script>
+<script src="vendor/babel.min.js"></script>
+
+<script src="i18n.js"></script>
+<script src="api.js"></script>
+<script type="text/babel" src="icons.jsx"></script>
+<script type="text/babel" src="premium-icons.jsx"></script>
+<script type="text/babel" src="charts.jsx"></script>
+<script type="text/babel" src="motion.jsx"></script>
+<script type="text/babel" src="ui.jsx"></script>
+<script type="text/babel" src="laptop-core.jsx"></script>
+<script type="text/babel" src="layout.jsx"></script>
+<script type="text/babel" src="page-overview.jsx"></script>
+<script type="text/babel" src="page-security-logs.jsx"></script>
+<script type="text/babel" src="page-system-network-reports.jsx"></script>
+<script type="text/babel" src="page-alerts-profile.jsx"></script>
+
+<script type="text/babel">
+  const { useState, useEffect } = React;
+
+  // available backgrounds (all local — no external requests)
+  const BG_OPTIONS = ['video-current', 'video-1', 'video-2', 'blue-waves', 'purple-nebula', 'aurora-green'];
+
+  function App() {
+    const [lang, setLang] = useState(() => localStorage.getItem('sx-lang') || 'en');
+    const [route, setRoute] = useState(() => localStorage.getItem('sx-route') || 'overview');
+    const [collapsed, setCollapsed] = useState(false);
+    const [drawer, setDrawer] = useState(false);
+    const [bg, setBg] = useState(() => localStorage.getItem('sx-bg') || 'video-current');
+
+    const t = window.I18N[lang];
+
+    // theme is fixed to dark (light mode removed)
+    useEffect(() => {
+      const html = document.documentElement;
+      html.setAttribute('dir', t._dir);
+      html.setAttribute('lang', lang);
+      html.setAttribute('data-theme', 'dark');
+      html.setAttribute('data-bg', bg);
+      localStorage.setItem('sx-lang', lang);
+      localStorage.setItem('sx-route', route);
+      localStorage.setItem('sx-bg', bg);
+    }, [lang, route, bg]);
+
+    // let any page change the background via a global event (settings page uses this)
+    useEffect(() => {
+      const onBg = (e) => { if (e.detail) setBg(e.detail); };
+      window.addEventListener('sx-set-bg', onBg);
+      return () => window.removeEventListener('sx-set-bg', onBg);
+    }, []);
+
+    const toggleLang = () => setLang(l => (l === 'en' ? 'ar' : 'en'));
+    // kick off count-up / gauge motion once the app is mounted
+    useEffect(() => {
+      const id = requestAnimationFrame(() => window.dispatchEvent(new Event('sx-booted')));
+      return () => cancelAnimationFrame(id);
+    }, []);
+    // programmatic navigation (e.g. clicking an alert jumps to its page)
+    useEffect(() => {
+      const nav = (e) => { if (e.detail) { setRoute(e.detail); setDrawer(false); } };
+      window.addEventListener('sx-navigate', nav);
+      return () => window.removeEventListener('sx-navigate', nav);
+    }, []);
+
+    // keyboard shortcuts: g+<key> jumps to page, Esc closes drawer/modals,
+    // Ctrl/Cmd+L toggles language, Ctrl/Cmd+J toggles theme
+    useEffect(() => {
+      let gPressed = 0;
+      const map = { o: 'overview', s: 'system', n: 'network', e: 'security',
+                    l: 'logs', r: 'reports', a: 'alerts', p: 'profile' };
+      const onKey = (e) => {
+        const tag = (document.activeElement && document.activeElement.tagName) || '';
+        const inField = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
+        const mod = e.ctrlKey || e.metaKey;
+        if (mod && (e.key === 'l' || e.key === 'L')) { e.preventDefault(); toggleLang(); return; }
+        if (e.key === 'Escape') { setDrawer(false); return; }
+        if (inField || e.altKey || mod) return;
+        if (e.key === 'g') { gPressed = Date.now(); return; }
+        if (gPressed && Date.now() - gPressed < 1500 && map[e.key]) {
+          e.preventDefault(); setRoute(map[e.key]); setDrawer(false); gPressed = 0;
+        }
+      };
+      window.addEventListener('keydown', onKey);
+      return () => window.removeEventListener('keydown', onKey);
+    }, []);
+    const toggleSidebar = () => {
+      if (window.innerWidth <= 760) setDrawer(d => !d);
+      else setCollapsed(c => !c);
+    };
+
+    const Page = {
+      overview: window.Overview, system: window.System, network: window.Network,
+      security: window.Security, logs: window.Logs, reports: window.Reports,
+      alerts: window.Alerts, profile: window.Profile,
+    }[route];
+
+    return (
+      <div className={'app' + (collapsed ? ' collapsed' : '') + (drawer ? ' drawer' : '')}>
+        <window.Sidebar t={t} route={route} setRoute={(r) => { setRoute(r); setDrawer(false); }} collapsed={collapsed} />
+        <div className="main">
+          <window.TopBar t={t} lang={lang} route={route}
+            onToggleSidebar={toggleSidebar} onToggleLang={toggleLang} />
+          <div className="scroll" key={route + lang}>
+            {Page ? <Page t={t} lang={lang} /> : <window.Simple t={t} lang={lang} route={route} />}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+<script>
+  /* keep the muted background video playing (autoplay can get paused in embeds) */
+  (function () {
+    var v = document.querySelector('.bg-video');
+    if (!v) return;
+    function kick() { v.muted = true; var p = v.play(); if (p && p.catch) p.catch(function(){}); }
+    ['canplay', 'loadeddata'].forEach(function (e) { v.addEventListener(e, kick); });
+    window.addEventListener('focus', kick);
+    document.addEventListener('visibilitychange', function () { if (!document.hidden) kick(); });
+    document.addEventListener('pointerdown', kick, { once: false });
+    setInterval(function () { if (v.paused) kick(); }, 1500);
+    kick();
+  })();
+</script>
+</body>
+</html>
