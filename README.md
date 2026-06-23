@@ -27,11 +27,11 @@ ever uploaded** — all detection and analysis happen on your device.
 
 | Overview | Security & Live Detection |
 |----------|---------------------------|
-| `![Overview](docs/screenshot-overview.png)` | `![Security](docs/screenshot-security.png)` |
+| ![Overview](https://github.com/user-attachments/assets/d38e894a-9e81-4185-9914-15218185fe0e) | ![Security](https://github.com/user-attachments/assets/6a48f245-56c5-4825-acfc-f8e1d182842f) |
 
 | Reports | Real-time Protection |
 |---------|----------------------|
-| `![Reports](docs/screenshot-reports.png)` | `![Protection](docs/screenshot-protection.png)` |
+| ![Reports](https://github.com/user-attachments/assets/ac514466-794f-4bc9-8431-113c493a052b) | ![Protection](https://github.com/user-attachments/assets/3acacb11-48ab-466c-ba97-ad254d596407) |
 
 <!-- Once you add real images, delete the backticks and the note above so they render. -->
 
