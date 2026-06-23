@@ -1,5 +1,14 @@
 # Sentinel SOC
 
+<p align="center">
+  <img src="https://img.shields.io/badge/platform-Windows%2010%20%7C%2011-0078D6?logo=windows&logoColor=white" alt="Platform">
+  <img src="https://img.shields.io/badge/python-3.10%2B-3776AB?logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/license-MIT-green" alt="License">
+  <img src="https://img.shields.io/badge/AI-local%20via%20Ollama-FF6B35" alt="Local AI">
+  <img src="https://img.shields.io/badge/privacy-100%25%20local-success" alt="Privacy">
+  <img src="https://img.shields.io/badge/tests-99%20passing-brightgreen" alt="Tests">
+</p>
+
 > A privacy-first, local-only security monitoring dashboard for Windows.
 > **An educational / supplementary security tool — not a replacement for antivirus.**
 
@@ -7,6 +16,24 @@ Sentinel SOC is a desktop security dashboard that runs entirely on your own
 machine. It scans for real vulnerabilities, watches running processes and files
 in real time, and explains what it finds using a local AI model. **Nothing is
 ever uploaded** — all detection and analysis happen on your device.
+
+---
+
+## Screenshots
+
+> Replace these placeholders with real screenshots. To add an image: drag it into
+> a GitHub issue to get a URL, or commit the files to a `docs/` folder and
+> reference them like `![Overview](docs/overview.png)`.
+
+| Overview | Security & Live Detection |
+|----------|---------------------------|
+| `![Overview](docs/screenshot-overview.png)` | `![Security](docs/screenshot-security.png)` |
+
+| Reports | Real-time Protection |
+|---------|----------------------|
+| `![Reports](docs/screenshot-reports.png)` | `![Protection](docs/screenshot-protection.png)` |
+
+<!-- Once you add real images, delete the backticks and the note above so they render. -->
 
 ---
 
