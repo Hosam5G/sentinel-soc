@@ -19,6 +19,23 @@ ever uploaded** — all detection and analysis happen on your device.
 
 ---
 
+## Screenshots
+
+> Replace these placeholders with real screenshots. To add an image: drag it into
+> a GitHub issue to get a URL, or commit the files to a `docs/` folder and
+> reference them like `![Overview](docs/overview.png)`.
+
+| Overview | Security & Live Detection |
+|----------|---------------------------|
+| `![Overview](docs/screenshot-overview.png)` | `![Security](docs/screenshot-security.png)` |
+
+| Reports | Real-time Protection |
+|---------|----------------------|
+| `![Reports](docs/screenshot-reports.png)` | `![Protection](docs/screenshot-protection.png)` |
+
+<!-- Once you add real images, delete the backticks and the note above so they render. -->
+
+---
 
 ## ⚠️ Important: what this is and isn't
 
